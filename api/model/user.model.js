@@ -20,8 +20,8 @@ const userSchema = new mongoose.Schema({
     },
 },{timestamps:true})
 
-userSchema.pre("save",async(req,res)=>{
-    if(!this.isModified('password')) return
+userSchema.pre('save',async function(req,res){
+    if (!this.isModified('password')) return;
     this.password = bcrypt.hash(this.password,10)
 })
 userSchema.methods.isPasswordCorrect = async function(condidatePassword){
