@@ -5,10 +5,11 @@ import Singup from "./pages/Singup";
 import Singin from "./pages/Singin";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
-
+import Header from "./components/Header";
 function App() {
   return (
     <BrowserRouter>
+    <Header/>
       <Routes>
         <Route path="/" element={<Home/>}>HOME</Route>
         <Route path="signup" element={<Singup/>}>SIGNUP</Route>
