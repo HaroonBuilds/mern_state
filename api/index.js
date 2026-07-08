@@ -13,11 +13,6 @@ mongoose.connect(process.env.DB_URL).then(()=>{
         console.log("database is connected successfully")
 }).catch(()=>{console.log("error while connecting  to database")})
 
-app.listen(4000,()=>{
-    console.log(`server is runing on port 4000`);
-    
-})
-
 app.use((err,req,res,next)=>{
     const statuscode = err.statuscode || 500;
     const message = err.message || "eternal server error";
@@ -28,3 +23,9 @@ app.use((err,req,res,next)=>{
         message,
     })
 })
+
+app.listen(4000,()=>{
+    console.log(`server is runing on port 4000`);
+    
+})
+

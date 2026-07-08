@@ -6,10 +6,10 @@ const user = new userModel({username,email,password});
 
 try {
     await user.save();
-return res.status(201).
-json({message:"user has been created"})
+    return res.status(201).
+    json({message:"user has been created"})
 } catch(error){
-    next(errorHandler(error))
+    next(error)
 }
 }
 
