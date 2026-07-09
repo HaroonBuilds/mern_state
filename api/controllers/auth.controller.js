@@ -1,5 +1,6 @@
 import userModel from '../model/user.model.js'
 import errorHandler from '../utils/errorHandler.js';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'
 export const signUp = async(req,res,next)=>{
 const {username,email,password} = req.body;
@@ -18,7 +19,7 @@ export const  signIn = async(req,res,next)=>{
     try {
         const validUser = await userModel.findOne({email});
         if(!validUser) return next(errorHandler(404,"User does not exist"));
-        const isPasswordValid = validUser.isPasswordCorrect(password);
+        const isPasswordValid = bcrypt.compare(password,validUser.password)
         if(!isPasswordValid) return next(errorHandler(401,"wrong credential"))
         const token = jwt.sign({id:validUser._id},process.env.JWT_SECRETE,);
         const {password:pass,...rest} = validUser._doc;
