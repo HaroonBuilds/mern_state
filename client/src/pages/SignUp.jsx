@@ -15,7 +15,8 @@ function SignUp() {
   const handleSubmit = async(e)=>{
     e.preventDefault();
     setLoading(true)
-    const res = await fetch('/api/auth/signup',{
+    try {
+      const res = await fetch('/api/auth/signup',{
       method:'POST',
       headers:{
         'Content-Type':'application/json',
@@ -31,6 +32,11 @@ function SignUp() {
     setLoading(false)
     setError(null)
     navigate('/signin')
+    } catch (error) {
+      console.log("fetch api is not working")
+      console.log(error)
+    }
+    
   }
   return (
     <div className='p-3 max-w-lg mx-auto'>

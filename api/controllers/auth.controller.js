@@ -2,14 +2,16 @@ import userModel from '../model/user.model.js'
 import errorHandler from '../utils/errorHandler.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'
+
 export const signUp = async(req,res,next)=>{
 const {username,email,password} = req.body;
-const user = new userModel({username,email,password});
 try {
+    const user = new userModel({username,email,password});
     await user.save();
     return res.status(201).
     json({message:"user has been created"})
 } catch(error){
+    console.log("eror in the signup controller")
     next(error)
 }
 }
