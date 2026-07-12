@@ -21,18 +21,18 @@ try {
 export const  signIn = async(req,res,next)=>{
     const {email,password} = req.body;
     try {
-        const validUser = await userModel.findOne({email});
-        if(!validUser) return next(errorHandler(404,"User does not exist"));
-        const isPasswordValid = await validUser.camparePassword(password);
+        const user = await userModel.findOne({email});
+        if(!user) return next(errorHandler(404,"User does not exist"));
+        const isPasswordValid = await user.camparePassword(password);
         if(!isPasswordValid) return next(errorHandler(401,"wrong credential"))
-        const token = jwt.sign({id:validUser._id},process.env.JWT_SECRETE);
-        const {password:pass,...rest} = validUser._doc;
+        const token = jwt.sign({id:user._id},process.env.JWT_SECRETE);
+       const {password:pass,...rest} = user._doc;
         res.cookie("access_token",token,{httpOnly:true})
         .status(200)
         .json({
             success:true,
             message:"user login successfully",
-            rest
+            user:rest
         })
        
     } catch (error) {
@@ -66,7 +66,12 @@ export const  google = async(req,res,next)=>{
                 await user.save();
                 const token = jwt.sign({id:user._id},process.env.JWT_SECRETE)
                 const {password:pass,...rest} = user._doc
-                res.status(200).cookie('access_token', token,{httpOnly:true,secure:true}).json({rest})
+                res.status(200)
+                .cookie('access_token', token,{httpOnly:true,secure:true})
+                .json({
+                    success:true,
+                    message:"user registerd successfully",
+                    user})
             }
 
     } catch (error) {
