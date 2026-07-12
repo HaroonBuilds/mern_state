@@ -14,6 +14,7 @@ mongoose.connect(process.env.DB_URL).then(()=>{
 }).catch(()=>{console.log("error while connecting  to database")})
 
 app.use((err,req,res,next)=>{
+    console.log(err)
     const statuscode = err.statuscode || 500;
     const message = err.message || "eternal server error";
     return res.status(statuscode)

@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 import { signinStart,signinSuccess,signinFailure } from "../redux/user/userSlice";
+import Oauth from "../components/Oauth.jsx";
 
 function SignIn() {
   const [formData,setData] = useState({});
@@ -55,6 +56,7 @@ function SignIn() {
        <Link to="/signup">
           <span className="text-blue-700">signUp</span>
        </Link>
+       <Oauth/>
       </div>
       {error && <p className="text-red-500  mt-5">{error}</p>}
     </div>
