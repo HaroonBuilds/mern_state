@@ -29,11 +29,7 @@ export const  signIn = async(req,res,next)=>{
        const {password:pass,...rest} = user._doc;
         res.cookie("access_token",token,{httpOnly:true})
         .status(200)
-        .json({
-            success:true,
-            message:"user login successfully",
-            user:rest
-        })
+        .json(rest)
        
     } catch (error) {
         console.log("error in the signin controller")
@@ -54,11 +50,8 @@ export const  google = async(req,res,next)=>{
             }
             res.status(200).
             cookie("access_token",token,options)
-            .json({
-                success:true,
-                message:"login successfully",
-                user
-            })}
+            .json(
+                user)}
             else{
                 const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
                 const hashedPassword = await bcrypt.hash(generatedPassword,10);
@@ -68,14 +61,11 @@ export const  google = async(req,res,next)=>{
                 const {password:pass,...rest} = user._doc
                 res.status(200)
                 .cookie('access_token', token,{httpOnly:true,secure:true})
-                .json({
-                    success:true,
-                    message:"user registerd successfully",
-                    user})
+                .json(rest)
             }
 
     } catch (error) {
-        console.log("erro in the signup controller")
+        console.log("erro in the google controller")
         next(error)
     }
 }

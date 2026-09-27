@@ -30,8 +30,9 @@ function Oauth() {
         }
     }
   return (
-    <div type='button' className='bg-red-700 text-white text-center rounded-lg
-    p-3 uppercase  hover:opacity-95' onClick={handleGooleclick}>continue with google</div>
+    <button  className='bg-red-700 text-white text-center rounded-lg
+    p-3 uppercase  hover:opacity-95' onClick={handleGooleclick}>
+        continue with google</button>
   )
 }
 
