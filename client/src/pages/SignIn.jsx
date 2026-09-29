@@ -18,6 +18,7 @@ function SignIn() {
   const handleSubmit = async(e)=>{
     e.preventDefault();
     dispatch(signinStart())
+    console.log("status 1")
     try {
       const res = await fetch('/api/auth/signin',{
       method:'POST',
@@ -28,14 +29,17 @@ function SignIn() {
     })
     
     const data = await res.json();
+    
     if(data.success == false){
       dispatch(signinFailure(data.message))
+      console.log("status 3")
       return;
     }
     dispatch(signinSuccess(data))
+    console.log("sigin successfully")
     navigate('/')
     } catch (error) {
-      dispatch(signinFailure(error.message) || "Something went wrong")
+      dispatch(signinFailure(error.message || "Something went wrong"))
 
     }
     
@@ -43,7 +47,7 @@ function SignIn() {
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7'>SignIn</h1>
-      <form action="" className='flex flex-col gap-4' onSubmit={handleSubmit}>
+      <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
         <input type="email" placeholder='email' onChange={handleChange}
         className='border p-3 rounded-lg' id="email"/>
         <input type="password" placeholder='password' onChange={handleChange}

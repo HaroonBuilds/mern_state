@@ -1,16 +1,57 @@
-import {useSelector} from 'react-redux'
-
+import {useSelector} from 'react-redux';
+import { useEffect, useRef, useState } from 'react';
 export default function Profile() {
-  const {currentUser} = useSelector((state) => state.user)
+  const fileRef = useRef(null);
+  const [file,setFile] = useState(undefined);
+  const [formData,setFormData] = useState({});
+  const [uploadError,setUploadError] = useState(false)
+  const {currentUser} = useSelector((state) => state.user);
+  useEffect(()=>{
+    if(file){
+      handleFileUpload(file)
+    }
+  },[file])
+
+  const handleFileUpload = async (uploadFile) => {
+  const formPayload = new FormData();
+  formPayload.append('file', uploadFile);
+  formPayload.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+
+  try {
+    setUploadError(false);
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      { method: 'POST', body: formPayload }
+    );
+    const result = await res.json();
+
+    if (!res.ok || result.error) {
+      console.log(result.error?.message);
+      setUploadError(true);
+      return;
+    }
+
+    setFormData({ ...formData, avatar: result.secure_url });
+    console.log('successful upload', result.secure_url);
+  } catch (error) {
+    console.log(error);
+    setUploadError(true);
+  }
+
+  
+};
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
       <form className='flex flex-col gap-4'>
+        <input onChange={(e)=>setFile(e.target.files[0])} type="file" ref={fileRef} hidden accept='image/*'/>
         <img
+          onClick={()=> fileRef.current.click()}
           src={currentUser.avatar}
           alt="profile"
           className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2'
         />
+        {uploadError && <p className='text-red-700 self-center'>error while uploading image</p>}
         <input
           type="text"
           placeholder='username'

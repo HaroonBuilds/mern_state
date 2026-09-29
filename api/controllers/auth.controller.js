@@ -29,7 +29,13 @@ export const  signIn = async(req,res,next)=>{
        const {password:pass,...rest} = user._doc;
         res.cookie("access_token",token,{httpOnly:true})
         .status(200)
-        .json(rest)
+        .json(
+            {
+                success:true,
+                message:"successfully signin",
+                rest,
+            }
+            )
        
     } catch (error) {
         console.log("error in the signin controller")
