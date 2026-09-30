@@ -48,10 +48,10 @@ export default function Profile() {
         <img
           onClick={()=> fileRef.current.click()}
           src={currentUser.avatar}
-          alt="profile"
+          alt="Profile"
           className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2'
         />
-        {uploadError && <p className='text-red-700 self-center'>error while uploading image</p>}
+        <p className='text-sm self-center'>{uploadError && <span className='text-red-700 self-center'>Error image upload</span>}</p>
         <input
           type="text"
           placeholder='username'

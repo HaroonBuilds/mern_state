@@ -1,26 +1,29 @@
+import { json } from 'express'
+import User from '../model/user.model.js'
 import userModel from '../model/user.model.js'
 import errorHandler from '../utils/errorHandler.js'
-const signUp = async(req,res) =>{
-    const {email,password} = req.body
-    const user = await userModel.findOne({email})
-    if(user){
-        console.log("user already exist")
+
+
+export const updateUser = async(req,res,next)=>{
+ if(req.user.id !== req.params.id) return next(errorHandler(401,'you can only update your account'))
+    try {
+        if(req.body.password){
+            req.body.password = jwt.hashSync(req.body.password,10)
+        }
+        const updateUserInfo = await User.findByIdAndUpdate(req.params.id,{
+            $set:{
+                username:req.body.username,
+                email:req.body.email,
+                password:req.body.password,
+                avatar:req.body.password,
+            }
+        },{new:true})
+       const {password,...rest} = updateUserInfo._doc;
+
+        return res.status(200)
+        .json(rest)
+    } catch (error) {
+        next(errorHandler(error))
     }
-    const newUser = new userModel({email,password});
-    return res.status(200)
-    .json({success:true,
-        message:"usercreated successfully",
-        createdUser:newUser
-    })
+
 }
-
-
-// const updateUser = async(req,res,next)=>{
-//     if(req.user.id !== req.params.id) return next(errorHandler(401,"You can only update your own account"));
-//     try {
-//         if(re)
-//     } catch (error) {
-//         next()
-//     }
-
-// }
